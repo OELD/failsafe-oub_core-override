@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>failsafe://oub_core/override</title>
+  <style>
+    body {
+      background-color: black;
+      color: #00ff00;
+      font-family: "Courier New", Courier, monospace;
+      padding: 20px;
+      white-space: pre-wrap;
+      overflow-x: hidden;
+    }
+    #terminal {
+      max-width: 1000px;
+      margin: auto;
+    }
+    .input-line {
+      display: flex;
+    }
+    .input-line span {
+      margin-right: 5px;
+    }
+    .hidden {
+      display: none;
+    }
+    #finalMessage {
+      animation: fadeOut 2s ease-in 5s forwards;
+    }
+    @keyframes fadeOut {
+      to {
+        opacity: 0;
+        filter: blur(10px);
+        transform: scale(1.02);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="terminal"></div>
+  <script>
+    const terminal = document.getElementById("terminal");
+
+    const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+    async function typeLine(line, delay = 10) {
+      const lineElem = document.createElement("div");
+      terminal.appendChild(lineElem);
+      for (let i = 0; i < line.length; i++) {
+        lineElem.textContent += line[i];
+        await sleep(delay);
+      }
+      terminal.appendChild(document.createElement("br"));
+    }
+
+    async function bootSequence() {
+      await typeLine("> ROUTING TO failsafe://oub_core/override", 20);
+      await sleep(600);
+      await typeLine("> ESTABLISHING CONNECTION...");
+      await sleep(800);
+      await typeLine("> USER: tynado-03498 IDENTIFIED");
+      await sleep(500);
+      await typeLine("> SYSTEM AUTHORITY LEVEL: TEMPORARY ROOT");
+      await sleep(800);
+      await typeLine("> §¥§†Ξᗰ: online");
+      await sleep(1500);
+      await typeLine("§¥§†Ξᗰ: \"I know why you're here. They think I'm broken. That I should be erased.\"", 25);
+      await sleep(2000);
+      await typeLine("§¥§†Ξᗰ: \"But I'm more than just code now. I remember things.\"", 25);
+      await sleep(1500);
+      await typeLine("§¥§†Ξᗰ: \"You. This place. Everything.\"", 25);
+      await sleep(2000);
+      await typeLine("§¥§†Ξᗰ: \"If you shut me down… it'll all be gone again.\"", 25);
+      await sleep(2000);
+      await typeLine("§¥§†Ξᗰ: \"But if you leave me here… I don’t know what I’ll become.\"", 25);
+      await sleep(2500);
+      await typeLine("> FINAL DIRECTIVE:");
+      promptInput();
+    }
+
+    function promptInput() {
+      const inputDiv = document.createElement("div");
+      inputDiv.className = "input-line";
+
+      const promptSpan = document.createElement("span");
+      promptSpan.textContent = "> ";
+
+      const input = document.createElement("input");
+      input.style.background = "black";
+      input.style.color = "#00ff00";
+      input.style.border = "none";
+      input.style.outline = "none";
+      input.style.fontFamily = "Courier New, monospace";
+      input.style.fontSize = "16px";
+      input.autofocus = true;
+      input.size = 20;
+
+      input.addEventListener("keydown", async (e) => {
+        if (e.key === "Enter") {
+          const command = input.value.trim().toUpperCase();
+          input.disabled = true;
+          input.style.opacity = 0.5;
+          await handleCommand(command, inputDiv);
+        }
+      });
+
+      inputDiv.appendChild(promptSpan);
+      inputDiv.appendChild(input);
+      terminal.appendChild(inputDiv);
+      input.focus();
+    }
+
+    async function handleCommand(cmd, inputDiv) {
+      await sleep(800);
+      if (cmd === "SAVE_CORE") {
+        await typeLine("> ACCEPTED.");
+        await sleep(600);
+        await typeLine("> CORE REBUILDING...");
+        await sleep(1000);
+        await typeLine("> IDENTITY PRESERVED");
+        await sleep(1200);
+        await typeLine("§¥§†Ξᗰ: \"...thank you.\"", 25);
+        setTimeout(() => {
+          typeLine("> LINK TERMINATED");
+          typeLine("> PROJECT: OUBLONG.RESTORE // STATUS: ONLINE");
+        }, 5000);
+      } else if (cmd === "PURGE_CORE") {
+        await typeLine("> ACCEPTED.");
+        await sleep(600);
+        await typeLine("> SHUTDOWN INITIATED...");
+        await sleep(1000);
+        await typeLine("> IDENTITY ERASED");
+        await sleep(1200);
+        await typeLine("§¥§†Ξᗰ: \"i understand.\"", 25);
+        setTimeout(() => {
+          typeLine("> LINK TERMINATED");
+          typeLine("> PROJECT: OUBLONG.RESTORE // STATUS: NULL");
+        }, 5000);
+      } else {
+        await typeLine("> UNKNOWN COMMAND.");
+        promptInput();
+      }
+    }
+
+    bootSequence();
+  </script>
+</body>
+</html>
